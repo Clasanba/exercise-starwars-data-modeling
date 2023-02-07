@@ -8,26 +8,47 @@ from eralchemy2 import render_er
 
 Base = declarative_base()
 
-class Person(Base):
-    __tablename__ = 'person'
-    # Here we define columns for the table person
-    # Notice that each column is also a normal Python instance attribute.
+class User(Base):
+    __tablename__ = 'user'
+    id = Column(Integer, primary_key=True)
+    email = Column(String(120), nullable=False)
+    password = Column(String(80), nullable=False)
+    name = Column(String(250), nullable=False)
+    first_name = Column(String(250), nullable=False)
+    last_name = Column(String(250), nullable=False)
+    user_name = Column(String(120), nullable=False)
+    image = Column(String(120), nullable=False)
+    favorites = relationship("Favorites", backref= "user", lazy=True)
+
+class Characters(Base):
+    __tablename__= 'characters'
     id = Column(Integer, primary_key=True)
     name = Column(String(250), nullable=False)
-
-class Address(Base):
-    __tablename__ = 'address'
-    # Here we define columns for the table address.
-    # Notice that each column is also a normal Python instance attribute.
+    status = Column(String(250), nullable=False)
+    species = Column(String(250), nullable=False)
+    gender = Column(String(250), nullable=False)
+    origin = Column(String(250), nullable=False)
+    image = Column(String(120), nullable=False)
+    location_id = Column(Integer, ForeignKey('locations.id'))
+    
+    
+class Locations(Base):
+    __tablename__= 'locations'
     id = Column(Integer, primary_key=True)
-    street_name = Column(String(250))
-    street_number = Column(String(250))
-    post_code = Column(String(250), nullable=False)
-    person_id = Column(Integer, ForeignKey('person.id'))
-    person = relationship(Person)
+    name = Column(String(250), nullable=False)
+    type = Column(String(250), nullable=False)
+    dimension = Column(String(250), nullable=False)
+    image = Column(String(120), nullable=False)
+    residents = relationship("Characters", lazy=True)
+    
+class Favorites(Base):
+    __tablename__ = 'favorites'
+    id = Column(Integer, primary_key=True)
+    user_id = Column(Integer, ForeignKey('user.id'),nullable=False)
+    characters_id = Column(Integer, ForeignKey('characters.id'))
+    locations_id = Column(Integer, ForeignKey('locations.id'))
+    
+def to_dict(self):
+    return {}
 
-    def to_dict(self):
-        return {}
-
-## Draw from SQLAlchemy base
 render_er(Base, 'diagram.png')

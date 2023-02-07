@@ -1,4 +1,6 @@
-# StarWars blog database (base de datos)
+# StarWars blog database 
+<img src="diagram.png"/>
+
 
 **Importante**: Para realizar esta actividad necesitas hacer un `fork` de [este repo](https://github.com/breatheco-de/exercise-starwars-data-modeling) en tu cuenta de **Github** y luego, abrir el *fork* en Gitpod.
 
